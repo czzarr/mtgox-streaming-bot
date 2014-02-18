@@ -15,6 +15,8 @@ HttpGoxClient.prototype._executeRequest = function (options, cb) {
       if (err) {
         cb(err);
       } else {
+        console.log('=====WHATUP======');
+        console.log(body);
         cb(null, JSON.parse(body));
       }
     });
@@ -31,9 +33,8 @@ HttpGoxClient.prototype._makePrivateRequest = function (path, args, cb) {
   }
   args ? args : args = {};
 
-  var data = querystring.stringify(args)
   var url = endpoint + path;
-  var options = { url: url, method: 'POST', body: data };
+  var options = { url: url, method: 'POST', form: args };
 
   return this._executeRequest(options, cb);
 };
@@ -52,5 +53,6 @@ HttpGoxClient.prototype.add = function (type, amount_int, price_int, cb) {
 HttpGoxClient.prototype.cancel = function (orderId, cb) {
   var path = 'order/cancel';
   var args = { oid: orderId };
+  console.log('====CANCELLING=====', args);
   return this._makePrivateRequest(path, args, cb);
 };
